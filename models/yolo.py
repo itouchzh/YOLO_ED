@@ -117,9 +117,9 @@ class Decoupled_Detect(nn.Module):
         self.register_buffer('anchors', torch.tensor(anchors).float().view(self.nl, -1, 2))  # shape(nl,na,2)
         
         self.m_stem = nn.ModuleList(Conv(x, x, 1) for x in ch)  # stem conv
-        # self.m_cls = nn.ModuleList(nn.Sequential(Conv(x, x, 3), nn.Conv2d(x, self.na * self.nc, 1)) for x in ch)  # cls conv
-        self.m_cls = nn.ModuleList(nn.Sequential(nn.Conv2d(x, self.na * self.nc, 1)) for x in ch)  # cls conv
-        # self.m_reg_conf = nn.ModuleList(Conv(x, x, 3) for x in ch)  # reg_conf stem conv
+        self.m_cls = nn.ModuleList(nn.Sequential(Conv(x, x, 3), nn.Conv2d(x, self.na * self.nc, 1)) for x in ch)  # cls conv
+        # self.m_cls = nn.ModuleList(nn.Sequential(nn.Conv2d(x, self.na * self.nc, 1)) for x in ch)  # cls conv
+        self.m_reg_conf = nn.ModuleList(Conv(x, x, 3) for x in ch)  # reg_conf stem conv
         # self.m_reg_conf = nn.ModuleList(Conv(x, x, 3) for x in ch)  # reg_conf stem conv
         self.m_reg = nn.ModuleList(nn.Conv2d(x, self.na * 4, 1) for x in ch)  # reg conv 坐标，
         self.m_conf = nn.ModuleList(nn.Conv2d(x, self.na * 1, 1) for x in ch)  # conf conv
@@ -134,13 +134,13 @@ class Decoupled_Detect(nn.Module):
             
             bs, _, ny, nx = x[i].shape
             x_cls = self.m_cls[i](x[i]).view(bs, self.na, self.nc, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
-            # x_reg_conf = self.m_reg_conf[i](x[i])
-            # x_reg = self.m_reg[i](x_reg_conf).view(bs, self.na, 4, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
-            # x_conf = self.m_conf[i](x_reg_conf).view(bs, self.na, 1, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
+            x_reg_conf = self.m_reg_conf[i](x[i])
+            x_reg = self.m_reg[i](x_reg_conf).view(bs, self.na, 4, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
+            x_conf = self.m_conf[i](x_reg_conf).view(bs, self.na, 1, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
-            # x_reg_conf = self.m_reg_conf[i](x[i])
-            x_reg = self.m_reg[i](x[i]).view(bs, self.na, 4, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
-            x_conf = self.m_conf[i](x[i]).view(bs, self.na, 1, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
+            
+            # x_reg = self.m_reg[i](x[i]).view(bs, self.na, 4, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
+            # x_conf = self.m_conf[i](x[i]).view(bs, self.na, 1, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
 
             x[i] = torch.cat([x_reg, x_conf, x_cls], dim=4)

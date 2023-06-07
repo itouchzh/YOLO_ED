@@ -184,7 +184,7 @@ class ComputeLoss:
                 # iou_ratio = 0
                 # iou_ratio = 0.6
                 # iou_ratio = 0.7
-                iou_ratio = 0.4
+                iou_ratio = 0.5
                 lbox += (1 - iou_ratio) * (1.0 - nwd).mean() + iou_ratio * (1.0 - iou).mean()  # iou loss
 
                 # Objectness
