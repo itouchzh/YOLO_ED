@@ -302,8 +302,8 @@ def run(
     # Save JSON
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
-        anno_json = str(Path('../../datasets/GTSDB/annotations/instances_val2017.json'))  # annotations
-        # anno_json = str(Path('../../datasets/tt100ko/annotations/instances_val2017.json'))  # annotations
+        # anno_json = str(Path('../../datasets/GTSDB/annotations/instances_val2017.json'))  # annotations
+        anno_json = str(Path('../../datasets/tt100ko/annotations/instances_val2017.json'))  # annotations
         # anno_json = str(Path(data.get('path', '../coco') / '/annotations/instances_val2017.json'))  # annotations
         
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions
@@ -342,8 +342,8 @@ def run(
 def parse_opt():
     parser = argparse.ArgumentParser()
     # parser.add_argument('--data', type=str, default=ROOT / 'data/coco128.yaml', help='dataset.yaml path')
-    parser.add_argument('--data', type=str, default=ROOT / 'data/GTSDB.yaml', help='dataset.yaml path')
-    # parser.add_argument('--data', type=str, default=ROOT / 'data/TT100K.yaml', help='dataset.yaml path')
+    # parser.add_argument('--data', type=str, default=ROOT / 'data/GTSDB.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/TT100K.yaml', help='dataset.yaml path')
     # parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model path(s)')
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'runs/train/exp57/weights/best.pt', help='model path(s)')
     parser.add_argument('--batch-size', type=int, default=1, help='batch size')
