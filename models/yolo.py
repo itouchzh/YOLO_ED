@@ -564,9 +564,9 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
         elif m in {efficientvit_b0, efficientvit_b1,efficientvit_b2,efficientvit_b3}:
             m = m(*args)
             c2 = m.channel
-        elif m is ContextAggregation:
-            c2 = ch[f]
-            args = [c2]
+        # elif m is ContextAggregation:
+        #     c2 = ch[f]
+        #     args = [c2]
         else:
             c2 = ch[f]
         if isinstance(c2, list):
