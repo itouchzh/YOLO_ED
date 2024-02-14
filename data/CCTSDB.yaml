@@ -1,0 +1,9 @@
+path: ../../datasets/CCTSDB2021YOLO
+train: train.txt  
+val: test.txt  
+test: test.txt
+
+names:  
+  0: danger 
+  1: mandatory 
+  2: prohibitory 
