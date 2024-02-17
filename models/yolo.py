@@ -555,6 +555,8 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
                 args[3] = make_divisible(args[3] * gw, 8)
         elif m is Contract:
             c2 = ch[f] * args[0] ** 2
+        elif m is space_to_depth:
+            c2 = 4 * ch[f]
         elif m is Expand:
             c2 = ch[f] // args[0] ** 2
         elif isinstance(m, str):
